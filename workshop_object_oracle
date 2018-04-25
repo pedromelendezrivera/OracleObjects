@@ -1,0 +1,11 @@
+
+
+CREATE OR REPLACE TYPE  typ_cuenta IS OBJECT
+(
+    account_num         NUMBER,     --NÚMERO DE CUENTA
+    account_holder      VARCHAR2(40),   --TITULAR DE LA CUENTA
+    balance             NUMBER,     --SALDO
+    interest_rate       NUMBER      --TASA DE INTERÉS
+);
+
+
