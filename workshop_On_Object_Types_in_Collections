@@ -1,0 +1,105 @@
+
+DEVELOPER: PL/SQL Practices
+On Object Types in Collections
+By Steven Feuerstein
+
+/*
+crear un tipo de objeto para alimentos generales; sus tres atributos me permiten seguir el nombre del alimento, 
+su grupo alimenticio y el color dominante de la comida: 
+*/
+
+CREATE TYPE food_t AS OBJECT (
+   name VARCHAR2 ( 100 )
+ , food_group VARCHAR2 ( 100 )
+ , color VARCHAR2 ( 100 )
+);
+
+/*
+A continuación, crear un tipo de objeto de comida compuesto por la cantidad de personas atendidas, el tipo de comida 
+y la comida servida: 
+*/
+
+CREATE TYPE meal_t AS OBJECT (
+   number_served INTEGER
+ , meal_type VARCHAR2 ( 100 )
+ , food_served food_t
+);
+
+/*
+Ahora crear un varray de hasta tres elementos para contener todas las comidas en un día: 
+*/
+
+CREATE TYPE meals_vat 
+IS VARRAY ( 3 ) OF meal_t;
+
+/*
+Luego escribir el código en el Listado 1 para llenar el varray con tres comidas para el día: desayuno, almuerzo y cena. Listado de Código 1: Poblando el varray 
+Code Listing 1: Populating the varray 
+
+DECLARE
+   -- A locally defined varray initialized with no elements.
+   l_one_day_of_meals meals_vat := meals_vat ( );
+BEGIN
+   -- Make room for the three meals.
+   l_one_day_of_meals.EXTEND ( 3 );
+
+   -- Add breakfast, using the constructor for both the meal 
+   -- and within it the food object type instance.
+   l_one_day_of_meals ( 1 ) :=
+      meal_t ( 4, 'BREAKFAST'
+                , food_t ( 'Scrambled Eggs', 'Protein', 'Yellow' ));
+
+   -- Add lunch
+   l_one_day_of_meals ( 2 ) :=
+         meal_t ( 6, 'LUNCH'
+                , food_t ( 'Deluxe Salad', 'Vegetables', 'Mostly Green' ));
+
+   -- Add dinner
+   l_one_day_of_meals ( 3 ) :=
+         meal_t ( 10, 'DINNER'
+                , food_t ( 'Tofu and Rice', 'Protein', 'White' ));
+END;
+
+
+DECLARE
+   -- A locally defined varray 
+   -- initialized with no elements.
+   l_one_day_of_meals meals_vat 
+                   := meals_vat ( );
+   -- A local object type 
+   -- instance for breakfast
+   l_breakfast food_t 
+   := food_t ( 'Scrambled Eggs', 
+                   'Protein', 'Yellow' );
+BEGIN
+   l_one_day_of_meals.EXTEND;
+   l_one_day_of_meals ( 1 ) 
+   := meal_t ( 4, 'BREAKFAST', 
+                   l_breakfast );
+END;
+
+
+Code Listing 2: Accessing an element in a varray 
+
+DECLARE
+     -- A locally defined varray initialized with one element.
+     l_one_day_of_meals meals_vat
+        := meals_vat ( meal_t ( 4
+                              , 'BREAKFAST'
+                              , food_t ( 'Scrambled Eggs', 'Protein', 'Yellow' )
+                              )
+                     );
+  BEGIN
+     -- If more than 2 people are served,
+     -- then show the name of the food.
+     IF l_one_day_of_meals ( 1 ).number_served > 2
+     THEN
+        DBMS_OUTPUT.put_line (
+           l_one_day_of_meals ( 1 ).food_served.name );
+     END IF;
+  END;
+
+
+
+
+
