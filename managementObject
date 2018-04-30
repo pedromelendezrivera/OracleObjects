@@ -27,6 +27,24 @@ BEGIN
   EJEMPLO(V1,V2,V3,V_NOMBRE, V_FECHA);
 END;
 
+---------------------------------
+create or replace PROCEDURE EJEMPLO (
+    V1 NUMBER,
+    V2 NUMBER,
+    V3 NUMBER,
+    v_nombre varchar2,
+    v_fecha date)
+AS
+    SUMA NUMBER;
+BEGIN           
+     SUMA := V1+V2+V3;
+        DBMS_OUTPUT.PUT_LINE('VALOR SUMA-> '||SUMA);              
+        DBMS_OUTPUT.PUT_LINE('NOMBRE-> '||v_nombre);              
+        DBMS_OUTPUT.PUT_LINE('FECHA -> '||v_fecha);              
+END EJEMPLO;
+
+
+
 ----------------------------------
 /*
 /  procedimiento para insertar peliculas
