@@ -1,0 +1,109 @@
+Gestión de objetos
+abril 30 de 2017
+
+/* Leer datos por teclado en un bloque anónimo (Se construyen de forma dinámica y se ejecutan una sola vez).
+/  En SQL*Plus una variable de sustitución que PL/SQL acepta sin problemas es anteponiendo un & delante de la variable.
+/
+/  Leer datos por teclado en un bloque anónimo 
+*/
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+V1 NUMBER;
+V2 NUMBER;
+V3 NUMBER;
+V_NOMBRE VARCHAR2(20);
+V_FECHA date;
+c_date  VARCHAR2(15);
+
+BEGIN           
+  V1 := &INGRESE_VALOR_1;
+  V2 := &INGRESE_VALOR_2;
+  V3 := &INGRESE_VALOR_3;
+  V_NOMBRE := '&INGRESE_NOMBRE';  
+  C_date := '&INGRESE_FECHA';  
+  V_FECHA := TO_DATE(c_date,'dd/mm/yyyy');
+  EJEMPLO(V1,V2,V3,V_NOMBRE, V_FECHA);
+END;
+
+----------------------------------
+/*
+/  procedimiento para insertar peliculas
+*/
+
+create or replace PROCEDURE insertar_en_tabla (
+    w_id_pelicula varchar2,
+    w_nombre_peli Varchar2,
+    w_genero_peli varchar2) 
+IS
+/*seccion declarativa*/
+BEGIN
+/*seccion ejecutable*/
+insert into PELICULAS values
+  (w_id_pelicula, w_nombre_peli, w_genero_peli);
+END insertar_en_tabla;
+
+----------------------------------
+/*
+/ bloque anonimo que llama procedimiento insertar peliculas
+*/
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    w_id_pelicula varchar2(5);
+    w_nombre_peli varchar2(50);
+    w_genero_peli varchar2(20);
+BEGIN           
+  w_id_pelicula := '&id_pelicula';
+  w_nombre_peli := '&nombre_peli';
+  w_genero_peli := '&genero_peli';
+  insertar_en_tabla(w_id_pelicula,w_nombre_peli,w_genero_peli);
+END;
+
+-------------------------------------
+
+/*
+/  procedimiento para insertar peliculas con un objeto typ_pelicula
+*/
+
+create or replace PROCEDURE insertar_en_pelicula (
+    w_id_pelicula varchar2,
+    w_nombre_peli Varchar2,
+    w_genero_peli varchar2)
+   
+IS
+/*seccion declarativa*/
+ w_pelicula typ_peliculas;
+BEGIN
+/*seccion ejecutable*/
+w_pelicula := typ_peliculas(w_id_pelicula,w_nombre_peli,w_genero_peli);
+insert into PELICULAS values(w_pelicula);
+END insertar_en_pelicula;
+
+-------------------------------------------
+
+/*
+/ bloque anonimo que llama procedimiento insertar_en_pelicula con un objeto typ_pelicula
+*/
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    w_id_pelicula varchar2(5);
+    w_nombre_peli varchar2(50);
+    w_genero_peli varchar2(20);
+BEGIN           
+  w_id_pelicula := '&id_pelicula';
+  w_nombre_peli := '&nombre_peli';
+  w_genero_peli := '&genero_peli';
+  insertar_en_pelicula(w_id_pelicula,w_nombre_peli,w_genero_peli);
+END;
+
+------------------------------------------
+
+
+
+
+
