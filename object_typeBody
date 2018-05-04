@@ -1,0 +1,86 @@
+mato 4 de 2018
+
+1. Definir un nuevo tipo de objeto llamado 'typ_usuario'
+   además de los atributos, relacionar las funciones y procedimientos que se van asociar.  
+
+create or replace TYPE typ_usuario AS OBJECT (
+   idus integer,            
+   nombre VARCHAR2(40),         
+   apellido VARCHAR2(40),  
+   sex VARCHAR2(1),
+   fecnacimiento date,   
+   MEMBER PROCEDURE nuevo(idus integer, nombre VARCHAR2, apellido VARCHAR2, sex VARCHAR2, fecnacimiento date),
+   MEMBER PROCEDURE buscar(idus integer),
+   MEMBER PROCEDURE suprimir(idus integer),
+   MEMBER PROCEDURE actualizar(idus integer, nombre varchar2, apellido varchar2),
+   MEMBER PROCEDURE buscarRangoFecha(fechai date, fechaf date),
+   MEMBER PROCEDURE buscarSexo(sex varchar2)
+);
+------------------------------------------------------------------------
+2 Definir el type body al tipo creado 'typ_usuario'
+
+create or replace type body typ_usuario is
+
+ MEMBER PROCEDURE nuevo(idus integer, nombre VARCHAR2, apellido VARCHAR2, sex VARCHAR2, fecnacimiento date)
+   IS
+   --declaracion de variables
+   BEGIN
+     return;
+   END;
+
+   MEMBER PROCEDURE buscar(idus integer)
+   IS
+   --declaracion de variables
+   BEGIN
+     return;
+   END;
+
+   MEMBER PROCEDURE suprimir(idus integer)
+   IS
+   --declaracion de variables
+   BEGIN
+     return;
+   END;
+
+
+   MEMBER PROCEDURE actualizar(idus integer, nombre varchar2, apellido varchar2)
+   IS
+   --declaracion de variables
+   BEGIN
+     return;
+   END;
+
+
+
+   MEMBER PROCEDURE buscarRangoFecha(fechai date, fechaf date)
+   IS
+   --declaracion de variables
+   BEGIN
+     return;
+   END;
+
+
+   MEMBER PROCEDURE buscarSexo(sex varchar2)
+   IS
+   --declaracion de variables
+   BEGIN
+     return;
+   END;
+
+END;
+---------------------------------------------------------------
+3. para generar persistencia 
+   CREATE TABLE nombre_tabla OF tipo_objeto;
+   CREATE TABLE t_usuario of typ_usuario;
+---------------------------------------------------------------   
+   
+   
+   
+   
+   
+
+
+
+
+
+
