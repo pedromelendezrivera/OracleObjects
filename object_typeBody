@@ -73,11 +73,42 @@ END;
    CREATE TABLE nombre_tabla OF tipo_objeto;
    CREATE TABLE t_usuario of typ_usuario;
 ---------------------------------------------------------------   
+ 4. modificar el procedimiento 'nuevo' con la lógica de negicio
+ 
+ ...
+  MEMBER PROCEDURE nuevo(idus integer, nombre VARCHAR2, apellido VARCHAR2, sex VARCHAR2, fecnacimiento date)
+   IS
+   --declaracion de variables
+   BEGIN
+   insert into t_usuario values(idus,nombre,apellido,sex,fecnacimiento);
+   --  return;
+   END;
+ ...
+ 
+ 
+--------------------------------------------------------------- 
+ 5 crear un procedimiento anomino para agregar registros  
    
+ SET SERVEROUTPUT ON;
+
+DECLARE
+   idus INTEGER;           
+   nombre VARCHAR2(40);         
+   apellido VARCHAR2(40);  
+   sex VARCHAR2(1);
+   fecnacimiento date;
+   usu TYP_USUARIO := TYP_USUARIO(0,'','','',SYSDATE);
+BEGIN           
+   idus := 100;           
+   nombre := 'Juan';       
+   apellido := 'Perez';  
+   sex := 'M';
+   fecnacimiento := '01/12/2017'; 
+    usu.nuevo(idus,nombre,apellido,sex,fecnacimiento );
+END;
+
    
-   
-   
-   
+**** verificar en la tabla t_usuario el registro insertado. :)   
 
 
 
