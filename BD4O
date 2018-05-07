@@ -1,0 +1,215 @@
+mayo 7 de 2018
+
+package cotrolador;
+
+public class Player {
+    
+    protected String name;
+    protected int squadNumber;
+    protected float battingAverage;
+    protected Team team;
+    
+    public Player(String name, int squadNumber,
+        float battingAverage){
+        this.name = name;
+        this.squadNumber = squadNumber;
+        this.battingAverage = battingAverage;
+    }
+    
+    public void setName(String n)
+           {this.name = n;}  
+
+    public String getName()
+           {return this.name;} 
+
+    public void setSquadNumber(int s)
+           {this.squadNumber = s;}  
+
+    public int getSquadNumber()
+           {return this.squadNumber;}   
+   
+    public void setBattingAverage(final float b) 
+          {this.battingAverage = b; } 
+    
+    public float getBattingAverage()
+          {return this.battingAverage;}
+
+    public void setTeam(Team t) 
+          {this.team = t;}
+    
+    public Team getTeam() 
+          {return this.team;}
+    
+    public String toString() {
+        return name + " Numero: "+squadNumber + " promedio:" + battingAverage;
+    }
+}
+
+///////////////////////////////////
+
+package cotrolador;
+
+public class Pitcher extends Player{   
+    private int wins;
+    
+    public Pitcher(String name, int squadNumber,
+                    float battingAverage, int wins) {
+        super(name,squadNumber,battingAverage);
+        this.wins = wins;
+    }  
+
+    public void setWins(final int w)
+           {this.wins = w;}
+    public int getWins() 
+           {return this.wins;}
+    
+    public String toString() {
+        return name + ":" + battingAverage + ", " + wins;
+    }
+}
+
+///////////////////////////////
+
+
+package cotrolador;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Team {
+    
+    private String name;
+    private String city;
+    private int won;
+    private int lost;
+    private List players;
+    
+    public Team(String name, String city,
+                int won, int lost){
+        this.name = name;
+        this.city = city;
+        this.won = won;
+        this.lost = lost;
+        this.players = new ArrayList();
+    }
+    
+    public void addPlayer(Player p) {
+        players.add(p);
+    }
+    
+    public void setName(String n)
+           {this.name = n;}   
+    
+    public String getName()
+           {return this.name;}  
+
+    public void setStadium(String c)
+           {this.city = c;}
+    
+    public String getCity()
+           {return this.city;} 
+
+    public void setPlayers(List p)
+           {players = p;}
+    
+    public List getPlayers()
+           {return players;}
+    
+    public void setWon(int w) 
+           {this.won = w;}
+    
+    public int getWon()
+           {return this.won;}
+
+    public void setLost(int l) 
+           {this.lost = l;}
+  
+    public int getLost() 
+           {return this.lost;}
+
+    public String toString() {
+        return name;
+    } 
+}
+
+///////////////////////////////////
+
+package cotrolador;
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+import com.db4o.config.EmbeddedConfiguration;
+import java.util.List;
+import com.db4o.query.Constraint;
+import com.db4o.query.Query;
+
+public class Metodos {
+    
+    
+     /**
+     * Permite cerrar la conexion a la base de datos que se esta utilizando
+     * @param baseDatos el ObjectContainer de la base de datos
+     */
+    public static void cerrarConexion(ObjectContainer baseDatos){
+        try{
+            baseDatos.close();
+        }catch(Exception e){System.out.println("error al cerrar la conexion");}
+    }
+    
+    /**
+     * Permite almacenar un Jugador (Player) en la base de datos
+     * @param baseDatos el objeto que representa la base de datos en la que se almacenara el Player
+     * @param ponente el Player que se desea almacear en la base de datos
+     */
+    public static void almacenarPlayer(ObjectContainer baseDatos, Player player){
+    try{
+        baseDatos.store(player);
+        System.out.println("Se ha almacenado correctamente el Jugador - Player");
+    }catch(Exception e)
+        {System.out.println("Se ha porducido un error en la insercion");}
+    }
+    
+      /**
+     * Imprime por pantalla el resultado de una consulta sin importar el metodo
+     * de consulta
+     *
+     * @param resultado el objeto en el que se ha almacenado el resultado de la
+     * consulta
+     */
+    public static void imprimirResultadoConsulta(ObjectSet resultado) {
+        System.out.println("Recuperados " + resultado.size() + " Objetos");
+        while (resultado.hasNext()) {
+            System.out.println(resultado.next());
+        }
+
+    }
+    
+        /**
+     * Permite hacer una consulta mediante Query-by-Example a partir de un squadNumber e
+     * imprimirla por pantalla
+     *
+     * @param baseDatos la base de datos desde la que se va a operar
+     * @param squadNumber el squadNumber del jugador - player que se quiere buscar
+     */
+    public static void consultarQBEPlayerSquadNumber(ObjectContainer baseDatos, int squadNumber) {
+        Player player = new Player(null, squadNumber, 0.0f);
+        ObjectSet resultado = baseDatos.queryByExample(player);
+        imprimirResultadoConsulta(resultado);
+
+    }
+    
+      /**
+     * Permite hacer una consulta mediante Query-by-Example a partir de un
+     * nombre e imprimirla por pantalla
+     *
+     * @param baseDatos la base de datos desde la que se va a operar
+     * @param nombre el nombre - name  del player que se desea encontrar
+     */
+    public static void consultarQBEPlayerName(ObjectContainer baseDatos, String name) {
+        Player player = new Player(name, 0, 0.0f);
+        ObjectSet resultado = baseDatos.queryByExample(player);
+        imprimirResultadoConsulta(resultado);
+    } 
+ }
+
+///////////////////////////////////////7
