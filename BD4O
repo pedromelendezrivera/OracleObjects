@@ -212,4 +212,97 @@ public class Metodos {
     } 
  }
 
-///////////////////////////////////////7
+///////////////////////////////////////
+
+package cotrolador;
+/**
+ *
+ * @author PMELENDEZ
+ */
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
+import com.db4o.config.EmbeddedConfiguration;
+
+public class ClassMain {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        
+    //Almacenar los Datos
+    EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
+    config.common().objectClass(Player.class).cascadeOnDelete(true);
+    //Se abre la conexión a la base de objetos congreso.db4o
+    ObjectContainer baseDatos = Db4oEmbedded.openFile(config, "ejemploTeam.db4o");
+        
+        
+        // Create Players
+        Player p1 = new Player("Barry Bonds", 25, 0.362f);
+        Player p2 = new Player("Marquis Grissom", 9, 0.279f);
+        Player p3 = new Player("Ray Durham", 5, 0.282f);
+        Player p4 = new Player("Adrian Beltre", 29, 0.334f);
+        Player p5 = new Player("Cesar Izturis", 3, 0.288f);
+        Player p6 = new Player("Shawn Green", 15, 0.266f);
+
+        // Create Pitchers
+        Player p7 = new Pitcher("Kirk Rueter",46, 0.131f, 9);
+        Player p8 = new Pitcher("Kazuhisa Ishii",17, 0.127f, 13);
+
+        // Create Teams
+        Team t1 = new Team("Giants", "San Francisco", 91, 71);
+        Team t2 = new Team("Dodgers", "Los Angeles", 93, 69);
+
+        // Add Players to Teams
+        t1.addPlayer(p1); 
+        p1.setTeam(t1);
+        
+        t1.addPlayer(p2); 
+        p2.setTeam(t1);
+        
+        t1.addPlayer(p3); 
+        p3.setTeam(t1);
+        
+        t2.addPlayer(p4); 
+        p4.setTeam(t2);
+        
+        t2.addPlayer(p5); 
+        p5.setTeam(t2);
+        
+        t2.addPlayer(p6); 
+        p6.setTeam(t2);
+
+        // Add Pitchers to Teams
+        t1.addPlayer(p7); 
+        p7.setTeam(t1);
+        
+        t2.addPlayer(p8); 
+        p8.setTeam(t2);
+   
+  try {   
+      /*
+        Metodos.almacenarPlayer(baseDatos, p1);
+        Metodos.almacenarPlayer(baseDatos, p2);
+        Metodos.almacenarPlayer(baseDatos, p3);
+        Metodos.almacenarPlayer(baseDatos, p4);
+        Metodos.almacenarPlayer(baseDatos, p5);
+        Metodos.almacenarPlayer(baseDatos, p6);
+        Metodos.almacenarPlayer(baseDatos, p7);
+        Metodos.almacenarPlayer(baseDatos, p8);
+        */
+         Metodos.consultarQBEPlayerName(baseDatos, "Ray Durham");
+         Metodos.consultarQBEPlayerSquadNumber(baseDatos,29);
+     } 
+    finally {
+            Metodos.cerrarConexion(baseDatos);
+        }
+   
+   
+    
+    }  
+}
+
+
+
+
+
